@@ -1,4 +1,0 @@
-akshare>=1.12.0
-openai>=1.12.0
-requests>=2.31.0
-pandas>=2.0.0
