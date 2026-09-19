@@ -1,0 +1,37 @@
+name: Daily ETF Analysis # 每日 ETF 分析
+
+on: # 触发条件
+  schedule:
+    # 国际标准时间 UTC 09:30，即北京时间 17:30 自动执行
+    # 早上 8:30 (北京时间) 对应 UTC 00:30，如需开盘前执行可加 - cron: '30 0 * * 1-5'
+    - cron: '30 9 * * 1-5'
+  workflow_dispatch: # 启用网页端手动运行按钮
+
+jobs:
+  run-analysis: # 任务 ID
+    runs-on: ubuntu-latest # 运行环境
+    steps:
+      - name: 检出代码 # 步骤名称
+        uses: actions/checkout@v4
+
+      - name: 设置 Python 环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: 安装依赖
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 运行 ETF 分析主程序
+        env:
+          ETF_LIST: ${{ secrets.ETF_LIST }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+          WECHAT_WEBHOOK: ${{ secrets.WECHAT_WEBHOOK }}
+          FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+          DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
+        run: python main.py
