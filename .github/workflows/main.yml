@@ -3,24 +3,30 @@ name: Daily ETF Analysis
 on:
   schedule:
     - cron: '30 9 * * 1-5'
-  workflow_dispatch: # 启用网页端手动运行按钮
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: etf-analysis
+  cancel-in-progress: false
 
 jobs:
   run-analysis:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - name: 检出代码
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: 设置 Python 环境
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
           cache: 'pip'
 
       - name: 安装依赖
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: 运行 ETF 分析主程序
@@ -33,3 +39,21 @@ jobs:
           FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
           DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
         run: python main.py
+
+      - name: 上传分析报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: etf-report-${{ github.run_id }}
+          path: reports/          # 按你实际输出目录调整
+          if-no-files-found: ignore
+          retention-days: 30
+
+      - name: 失败告警
+        if: failure()
+        env:
+          DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
+        run: |
+          curl -s -X POST "$DINGTALK_WEBHOOK" \
+            -H 'Content-Type: application/json' \
+            -d "{\"msgtype\":\"text\",\"text\":{\"content\":\"❌ ETF 分析任务失败: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}}"
