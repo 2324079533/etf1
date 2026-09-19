@@ -1,0 +1,36 @@
+name: Daily ETF Analysis
+
+on:在:
+  schedule:
+    # 国际标准时间 UTC 09:30，即北京时间每个工作日（周一至周五）17:30 自动执行
+    - cron: '30 9 * * 1-5'
+  workflow_dispatch: # 启用网页端手动运行按钮
+
+jobs:作业:
+  run-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码      - 名称: 检出代码
+        uses: actions/checkout@v4        使用: actions/checkout@v4
+
+      - name: 设置 Python 环境      - 名称: 设置 Python 环境配置 Python 环境
+        uses: actions/setup-python@v5        使用: actions/setup-python@v5        使用: actions/setup-python@v5        使用: actions/setup-python@v5
+        with:
+          python-version: '3.10'          Python 版本: '3.10'
+          cache: 'pip'          缓存: 'pip'
+
+      - name: 安装依赖
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 运行 ETF 分析主程序      - 名称: 运行 ETF 分析主程序      - 名称: 运行 ETF 分析主程序      - 名称: 运行 ETF 分析主程序      - 名称: 运行 ETF 分析主程序      - 名称: 运行 ETF 分析主程序      - 名称: 运行 ETF 分析主程序      - 名称: 运行 ETF 分析主程序
+        env:        环境:
+          ETF_LIST: ${{ secrets.ETF_LIST }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+          WECHAT_WEBHOOK: ${{ secrets.WECHAT_WEBHOOK }}
+          FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ 飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ 飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}
+          DINGTALK_WEBHOOK 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}
+        run: python main.py        运行: python main.py        运行: python main.py        运行: python main.py
