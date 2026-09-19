@@ -33,10 +33,13 @@ def get_enhanced_etf_data(etf_code):
     """获取 ETF 数据并计算移动均线等技术指标"""
     try:
         df = ak.fund_etf_hist_em(symbol=etf_code, period="daily", adjust="qfq")
-        if df.empty or len(df) < 20:
+       if df is None or df.empty:
+            print(f"⚠️ 警告: 接口未返回 {etf_code} 的数据，可能是代码拼写错误或海外IP被限制。")
             return None
-        
-        # 计算技术指标
+        if len(df) < 20:
+            print(f"⚠️ 警告: {etf_code} 交易天数仅有 {len(df)} 天，不足20天，无法计算 MA20 均线，跳过分析。")
+            return None
+          # 计算技术指标
         df['MA5'] = df['收盘'].rolling(window=5).mean().round(3)
         df['MA10'] = df['收盘'].rolling(window=10).mean().round(3)
         df['MA20'] = df['收盘'].rolling(window=20).mean().round(3)
