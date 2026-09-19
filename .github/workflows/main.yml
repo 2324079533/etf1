@@ -1,38 +1,27 @@
-name: Daily ETF Analysis每日ETF分析
+name: Daily ETF Analysis
 
-on:在:
-  workflow_dispatch: {} workflow_dispatch: {}
-  schedule:  调度:
-    # 早上 8:30 (北京时间) -> UTC 0:30，周一至周五开盘前
+on:
+  workflow_dispatch:
+  schedule:
     - cron: '30 0 * * 1-5'
-    # 下午 17:00 (北京时间) -> UTC 9:00，周一至周五收盘后 (如需 17:30 改为 '30 9 * * 1-5')
     - cron: '0 9 * * 1-5'
 
 jobs:
-  run-analysis:  运行分析:
+  run-analysis:
     runs-on: ubuntu-latest
     steps:
-      - name: 检出代码      - 名称: 检出代码
-        uses: actions/checkout@v4        使用: actions/checkout@v4
-
-      - name: 设置 Python 环境      - 名称: 设置 Python 环境      - 名称: 设置 Python 环境      - 名称: 设置 Python 环境配置 Python 环境
-        uses: actions/setup-python@v5        使用: actions/setup-python@v5        使用: actions/setup-python@v5        使用: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.10'          Python 版本: '3.10'
-          cache: 'pip'          缓存: 'pip'
-
-      - name: 安装依赖
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: 运行 ETF 分析主程序      - 名称: 运行 ETF 分析主程序      - 名称: 运行 ETF 分析主程序      - 名称: 运行 ETF 分析主程序      - 名称: 运行 ETF 分析主程序      - 名称: 运行 ETF 分析主程序      - 名称: 运行 ETF 分析主程序      - 名称: 运行 ETF 分析主程序
-        env        环境:        环境:
+          python-version: '3.10'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - env:
           ETF_LIST: ${{ secrets.ETF_LIST }}
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
           LLM_MODEL: ${{ secrets.LLM_MODEL }}
           WECHAT_WEBHOOK: ${{ secrets.WECHAT_WEBHOOK }}
-          FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ 飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}          飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ 飞书Webhook: ${{ secrets.FEISHU_WEBHOOK }}
-          DINGTALK_WEBHOOK 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{          钉钉Webhook: ${{ 钉钉Webhook: ${{          钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ 钉钉Webhook: ${{          钉钉Webhook: ${{ 钉钉Webhook: ${{          钉钉Webhook: ${{          钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{          钉钉Webhook: ${{ 钉钉Webhook: ${{          钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ 钉钉Webhook: ${{          钉钉Webhook: ${{ 钉钉Webhook: ${{          钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{          钉钉Webhook: ${{ 钉钉Webhook: ${{          钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ 钉钉Webhook: ${{ 钉钉Webhook: ${{          钉钉Webhook: ${{ 钉钉Webhook: ${{ 钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}          钉钉Webhook: ${{ secrets.DINGTALK_WEBHOOK }}
-        run: python main.py        运行:         运行:         运行: python main.py        运行:         运行: python main.py        运行: python main.py
+          FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+          DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
+        run: python main.py
