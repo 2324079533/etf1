@@ -2,7 +2,6 @@ name: Daily ETF Analysis
 
 on:
   schedule:
-    # 国际标准时间 UTC 09:30，即北京时间每个工作日（周一至周五）17:30 自动执行
     - cron: '30 9 * * 1-5'
   workflow_dispatch: # 启用网页端手动运行按钮
 
