@@ -1,20 +1,36 @@
-name: bot
+name: Daily ETF Analysis
 
 on:
   schedule:
-    - cron: '30 0 * * 1-5'
-    - cron: '0 9 * * 1-5'
+    # 国际标准时间 UTC 09:30，即北京时间每个工作日（周一至周五）17:30 自动执行
+    - cron: '30 9 * * 1-5'
+  workflow_dispatch: # 启用网页端手动运行按钮
 
 jobs:
   run-analysis:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Python 环境
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-      - run: pip install -r requirements.txt
-      - run: python daily_stock.py
+          cache: 'pip'
+
+      - name: 安装依赖
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 运行 ETF 分析主程序
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ETF_LIST: ${{ secrets.ETF_LIST }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
           WECHAT_WEBHOOK: ${{ secrets.WECHAT_WEBHOOK }}
+          FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+          DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
+        run: python main.py
